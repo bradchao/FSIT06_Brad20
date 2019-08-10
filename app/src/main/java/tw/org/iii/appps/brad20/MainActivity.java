@@ -40,14 +40,18 @@ public class MainActivity extends AppCompatActivity
 
         FileChooser.Builder builder =
                 new FileChooser.Builder(FileChooser.ChooserType.FILE_CHOOSER, this)
-                .setMultipleFileSelectionEnabled(true)
-                .setFileFormats(new String[] {".jpg", ".png"})
+                .setMultipleFileSelectionEnabled(false)
+                .setFileFormats(new String[] {".jpg", ".png", ".pdf"})
                 .setListItemsTextColor(R.color.colorPrimary)
                 .setPreviousDirectoryButtonIcon(R.drawable.ic_prev_dir)
                 .setDirectoryIcon(R.drawable.ic_directory)
                 .setFileIcon(R.drawable.ic_file);
         try {
             FileChooser fileChooserFragment = builder.build();
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, fileChooserFragment)
+                    .commit();
 
         } catch (ExternalStorageNotAvailableException e) {
             Log.v("brad", e.toString());
@@ -56,6 +60,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSelect(String path) {
-
+        Log.v("brad", "file = " + path);
     }
 }
