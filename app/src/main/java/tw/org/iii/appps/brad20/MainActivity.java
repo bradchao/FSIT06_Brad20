@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.io.File;
+
 import ir.sohreco.androidfilechooser.ExternalStorageNotAvailableException;
 import ir.sohreco.androidfilechooser.FileChooser;
 
@@ -59,11 +61,29 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSelect(String path) {
+    public void onSelect(final String path) {
         Log.v("brad", "file = " + path);
 
-
-
-        
+        new Thread(){
+            @Override
+            public void run() {
+                upload(path);
+            }
+        }.start();
     }
+
+    private void upload(String file){
+        try {
+            MultipartUtility mu = new MultipartUtility(
+                    "http://10.0.105.82:8080/MyJavaEE/Brad07",
+                    "",
+                    "UTF-8");
+            mu.addFilePart("upload", new File(file));
+            mu.finish();
+            Log.v("brad", "OK");
+        }catch (Exception e){
+            Log.v("brad", e.toString());
+        }
+    }
+
 }
